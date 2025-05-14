@@ -5,17 +5,17 @@
   "description": "Detects presence of Google Analytics scripts on pages.",
   "permissions": ["activeTab"],
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "common/icon16.png",
+    "48": "common/icon48.png",
+    "128": "common/icon128.png"
   },
   "browser_action": {
     "default_title": "Detect GA & GTM",
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
+      "16": "common/icon16.png",
+      "48": "common/icon48.png",
+      "128": "common/icon128.png"
     }
   }
 }
