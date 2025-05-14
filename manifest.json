@@ -1,0 +1,11 @@
+{
+  "manifest_version": 2,
+  "name": "Google Analytics Detector",
+  "version": "1.0",
+  "description": "Detects presence of Google Analytics scripts on pages.",
+  "permissions": ["activeTab"],
+  "browser_action": {
+    "default_title": "Detect Google Analytics",
+    "default_popup": "popup.html"
+  }
+}
