@@ -1,47 +1,51 @@
-name: Build and Release Extensions
+name: Build & Release Extensions
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
+
+permissions:
+  contents: write
 
 jobs:
-  build-and-release:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
+      - name: Package Chrome extension
         run: |
-          cd chrome && npm install
-          cd ../firefox && npm install
+          zip -r chrome-extension-${{ github.ref_name }}.zip chrome
 
-      - name: Build Chrome extension
+      - name: Package Firefox extension
         run: |
-          cd chrome
-          npm run build
-          zip -r ../chrome-extension.zip dist/
+          zip -r firefox-extension-${{ github.ref_name }}.xpi firefox
 
-      - name: Build Firefox extension
-        run: |
-          cd firefox
-          npm run build
-          zip -r ../firefox-extension.zip dist/
-
-      - name: Create Release
+      - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: actions/create-release@v1
         with:
-          files: |
-            chrome-extension.zip
-            firefox-extension.zip
-          generate_release_notes: true
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Chrome asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: chrome-extension-${{ github.ref_name }}.zip
+          asset_name: chrome-extension-${{ github.ref_name }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload Firefox asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: firefox-extension-${{ github.ref_name }}.xpi
+          asset_name: firefox-extension-${{ github.ref_name }}.xpi
+          asset_content_type: application/x-xpinstall
