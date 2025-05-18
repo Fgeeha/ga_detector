@@ -11,17 +11,16 @@ permissions:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Package Chrome extension
-        run: |
-          zip -r chrome-extension-${{ github.ref_name }}.zip chrome
+        run: zip -r chrome-extension-${{ github.ref_name }}.zip chrome
 
       - name: Package Firefox extension
-        run: |
-          zip -r firefox-extension-${{ github.ref_name }}.xpi firefox
+        run: zip -r firefox-extension-${{ github.ref_name }}.xpi firefox
 
       - name: Create GitHub Release
         id: create_release
@@ -35,17 +34,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Chrome asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: chrome-extension-${{ github.ref_name }}.zip
           asset_name: chrome-extension-${{ github.ref_name }}.zip
           asset_content_type: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Firefox asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: firefox-extension-${{ github.ref_name }}.xpi
           asset_name: firefox-extension-${{ github.ref_name }}.xpi
           asset_content_type: application/x-xpinstall
+          token: ${{ secrets.GITHUB_TOKEN }}
