@@ -1,0 +1,47 @@
+name: Build and Release Extensions
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd chrome && npm install
+          cd ../firefox && npm install
+
+      - name: Build Chrome extension
+        run: |
+          cd chrome
+          npm run build
+          zip -r ../chrome-extension.zip dist/
+
+      - name: Build Firefox extension
+        run: |
+          cd firefox
+          npm run build
+          zip -r ../firefox-extension.zip dist/
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            chrome-extension.zip
+            firefox-extension.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
