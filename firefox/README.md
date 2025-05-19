@@ -3,7 +3,7 @@
 
 ## Установка расширения в Firefox
 
-1. Скопируйте папку `common/` внутрь папки `firefox/`, чтобы структура выглядела так:
+Структура:
 
    ```
    firefox/
@@ -15,7 +15,7 @@
    ├── popup.html
    └── popup.js
    ```
-2. Откройте в Firefox страницу `about:debugging#/runtime/this-firefox`.
-3. Нажмите **Load Temporary Add-on…**.
-4. В появившемся диалоге выберите файл `firefox/manifest.json`.
-5. Расширение появится в панели инструментов — кликните его и проверьте работу.
+1. Откройте в Firefox страницу `about:debugging#/runtime/this-firefox`.
+2. Нажмите **Load Temporary Add-on…**.
+3. В появившемся диалоге выберите файл `firefox/manifest.json`.
+4. Расширение появится в панели инструментов — кликните его и проверьте работу.
