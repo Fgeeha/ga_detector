@@ -16,9 +16,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Package Chrome extension
-        run: |
-          cd chrome
-          zip -r chrome-extension-${{ github.ref_name }}.zip chrome
+        run: zip -r chrome-extension-${{ github.ref_name }}.zip chrome
 
       - name: Package Firefox extension
         run: |
